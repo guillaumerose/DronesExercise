@@ -17,4 +17,9 @@ public class AppTest {
         assertThat(App.process("DRONE_A;0 0 N;")).isEqualTo("DRONE_A : 0 0 N");
     }
 
+    @Test
+    public void should_be_able_to_go_forward() throws Exception {
+        assertThat(App.process("DRONE_A;0 0 N;AAAA")).isEqualTo("DRONE_A : 0 4 N");
+    }
+
 }

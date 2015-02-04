@@ -20,12 +20,17 @@
       <version>1.7.1</version>
       <scope>test</scope>
     </dependency>
-	<dependency>
-		<groupId>org.projectlombok</groupId>
-		<artifactId>lombok</artifactId>
-		<version>1.16.0</version>
-		<scope>provided</scope>
-	</dependency>
+    <dependency>
+      <groupId>org.projectlombok</groupId>
+      <artifactId>lombok</artifactId>
+      <version>1.16.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>12.0</version>
+    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.source>1.7</maven.compiler.source>
