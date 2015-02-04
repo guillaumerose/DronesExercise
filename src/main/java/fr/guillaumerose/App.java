@@ -27,8 +27,17 @@ public class App {
         }
 
         public Robot forward() {
-            if ("N".equals(direction)) {
+            if ("S".equals(direction)) {
+                return new Robot(name, x, y - 1, direction);
+            }
+            else if ("N".equals(direction)) {
                 return new Robot(name, x, y + 1, direction);
+            }
+            else if ("O".equals(direction)) {
+                return new Robot(name, x - 1, y, direction);
+            }
+            else if ("E".equals(direction)) {
+                return new Robot(name, x + 1, y, direction);
             }
             return this;
         }
@@ -38,7 +47,7 @@ public class App {
         System.out.println("Hello World!");
     }
 
-    public static String process(String input) {
+    public static String readLine(String input) {
         List<String> parts = newArrayList(Splitter.on(";").split(input));
         Robot robot = Robot.parse(parts.get(0), parts.get(1));
         List<String> instructions = newArrayList(Splitter.fixedLength(1).omitEmptyStrings().split(parts.get(2)));
