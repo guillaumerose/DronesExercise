@@ -8,9 +8,7 @@ import static org.assertj.core.api.Assertions.*;
 public class AppTest {
     @Test
     public void should_answer_acceptance_test() {
-        // String input =
-        // "55 25\nDRONE_A;7 10 N;AAGAAADAAGAAAGADAA\nDRONE_B;13 23 E;AAADAAGAAADAAGAAAAAADA";
-        // assertThat(App.process(input)).isEqualTo("DRONE_A : 13 0 O");
+        // assertThat(readLine("DRONE_A;7 10 N;AAGAAADAAGAAAGADAA")).isEqualTo("DRONE_A : 13 0 O");
     }
 
     @Test
@@ -33,5 +31,17 @@ public class AppTest {
     @Test
     public void should_be_able_to_start_at_a_different_point() throws Exception {
         assertThat(readLine("DRONE_B;10 5 O;A")).isEqualTo("DRONE_B : 9 5 O");
+    }
+
+    @Test
+    public void should_be_able_to_turn_left() throws Exception {
+        assertThat(readLine("DRONE_B;0 0 N;G")).isEqualTo("DRONE_B : 0 0 O");
+        assertThat(readLine("DRONE_B;10 5 S;G")).isEqualTo("DRONE_B : 10 5 E");
+    }
+
+    @Test
+    public void should_be_able_to_turn_right() throws Exception {
+        assertThat(readLine("DRONE_C;0 0 N;D")).isEqualTo("DRONE_C : 0 0 E");
+        assertThat(readLine("DRONE_C;10 5 S;D")).isEqualTo("DRONE_C : 10 5 O");
     }
 }
