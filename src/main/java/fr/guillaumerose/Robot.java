@@ -3,13 +3,15 @@ package fr.guillaumerose;
 import lombok.Data;
 import lombok.experimental.Wither;
 
+import static fr.guillaumerose.Direction.*;
+
 @Data
 @Wither
 class Robot {
     private final String name;
     private final int x;
     private final int y;
-    private final String direction;
+    private final Direction direction;
     private final int maxX;
     private final int maxY;
 
@@ -18,50 +20,26 @@ class Robot {
     }
 
     public Robot forward() {
-        if ("S".equals(direction)) {
+        if (S.equals(direction)) {
             return y - 1 >= 0 ? withY(y - 1) : this;
         }
-        else if ("N".equals(direction)) {
+        else if (N.equals(direction)) {
             return y + 1 <= maxY ? withY(y + 1) : this;
         }
-        else if ("O".equals(direction)) {
+        else if (O.equals(direction)) {
             return x - 1 >= 0 ? withX(x - 1) : this;
         }
-        else if ("E".equals(direction)) {
+        else if (E.equals(direction)) {
             return x + 1 <= maxX ? withX(x + 1) : this;
         }
         return this;
     }
 
     public Robot turnLeft() {
-        if ("S".equals(direction)) {
-            return withDirection("E");
-        }
-        else if ("N".equals(direction)) {
-            return withDirection("O");
-        }
-        else if ("O".equals(direction)) {
-            return withDirection("S");
-        }
-        else if ("E".equals(direction)) {
-            return withDirection("N");
-        }
-        return this;
+        return withDirection(direction.getLeft());
     }
 
     public Robot turnRight() {
-        if ("S".equals(direction)) {
-            return withDirection("O");
-        }
-        else if ("N".equals(direction)) {
-            return withDirection("E");
-        }
-        else if ("O".equals(direction)) {
-            return withDirection("N");
-        }
-        else if ("E".equals(direction)) {
-            return withDirection("S");
-        }
-        return this;
+        return withDirection(direction.getRight());
     }
 }

@@ -17,15 +17,15 @@ public class Map {
     private final int maxX;
     private final int maxY;
 
-    public Map(int maxX, int maxY) {
+    public Map(Integer maxX, Integer maxY) {
         this.maxX = maxX;
         this.maxY = maxY;
     }
 
     public String move(String input) {
         List<String> parts = newArrayList(Splitter.on(";").split(input));
-        Robot robot = parse(parts.get(0), parts.get(1), maxX, maxY);
         List<String> instructions = newArrayList(Splitter.fixedLength(1).omitEmptyStrings().split(parts.get(2)));
+        Robot robot = parse(parts.get(0), parts.get(1), maxX, maxY);
         for (String instruction : instructions) {
             if ("A".equals(instruction)) {
                 robot = robot.forward();
@@ -42,7 +42,7 @@ public class Map {
 
     public static Robot parse(String name, String position, int maxX, int maxY) {
         List<String> fields = newArrayList(Splitter.on(" ").split(position));
-        return new Robot(name, valueOf(fields.get(0)), valueOf(fields.get(1)), fields.get(2), maxX, maxY);
+        return new Robot(name, valueOf(fields.get(0)), valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX, maxY);
     }
 
     public static void main(String[] args) throws IOException {
