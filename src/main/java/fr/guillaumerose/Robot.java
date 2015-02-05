@@ -1,12 +1,10 @@
 package fr.guillaumerose;
 
-import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.experimental.Wither;
 
-import static fr.guillaumerose.Direction.*;
-
-@Data
 @Wither
+@AllArgsConstructor
 class Robot {
     private final String name;
     private final int x;
@@ -20,19 +18,18 @@ class Robot {
     }
 
     public Robot forward() {
-        if (S.equals(direction)) {
-            return y - 1 >= 0 ? withY(y - 1) : this;
+        switch (direction) {
+            case S:
+                return y - 1 >= 0 ? withY(y - 1) : this;
+            case N:
+                return y + 1 <= maxY ? withY(y + 1) : this;
+            case O:
+                return x - 1 >= 0 ? withX(x - 1) : this;
+            case E:
+                return x + 1 <= maxX ? withX(x + 1) : this;
+            default:
+                return this;
         }
-        else if (N.equals(direction)) {
-            return y + 1 <= maxY ? withY(y + 1) : this;
-        }
-        else if (O.equals(direction)) {
-            return x - 1 >= 0 ? withX(x - 1) : this;
-        }
-        else if (E.equals(direction)) {
-            return x + 1 <= maxX ? withX(x + 1) : this;
-        }
-        return this;
     }
 
     public Robot turnLeft() {

@@ -14,6 +14,9 @@ import static com.google.common.collect.Lists.*;
 import static java.lang.Integer.*;
 
 public class Map {
+    private static final String RIGHT = "D";
+    private static final String LEFT = "G";
+    private static final String FORWARD = "A";
     private final int maxX;
     private final int maxY;
 
@@ -24,25 +27,28 @@ public class Map {
 
     public String move(String input) {
         List<String> parts = newArrayList(Splitter.on(";").split(input));
-        List<String> instructions = newArrayList(Splitter.fixedLength(1).omitEmptyStrings().split(parts.get(2)));
-        Robot robot = parse(parts.get(0), parts.get(1), maxX, maxY);
-        for (String instruction : instructions) {
-            if ("A".equals(instruction)) {
+        Robot robot = robotFrom(parts);
+        for (String instruction : instructionsFrom(parts)) {
+            if (FORWARD.equals(instruction)) {
                 robot = robot.forward();
             }
-            else if ("G".equals(instruction)) {
+            else if (LEFT.equals(instruction)) {
                 robot = robot.turnLeft();
             }
-            else if ("D".equals(instruction)) {
+            else if (RIGHT.equals(instruction)) {
                 robot = robot.turnRight();
             }
         }
         return robot.summary();
     }
 
-    public static Robot parse(String name, String position, int maxX, int maxY) {
-        List<String> fields = newArrayList(Splitter.on(" ").split(position));
-        return new Robot(name, valueOf(fields.get(0)), valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX, maxY);
+    private Robot robotFrom(List<String> parts) {
+        List<String> fields = newArrayList(Splitter.on(" ").split(parts.get(1)));
+        return new Robot(parts.get(0), valueOf(fields.get(0)), valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX, maxY);
+    }
+
+    private static List<String> instructionsFrom(List<String> parts) {
+        return newArrayList(Splitter.fixedLength(1).omitEmptyStrings().split(parts.get(2)));
     }
 
     public static void main(String[] args) throws IOException {
