@@ -3,8 +3,6 @@ package fr.guillaumerose;
 import lombok.Data;
 import lombok.experimental.Wither;
 
-import static java.lang.Integer.*;
-
 @Data
 @Wither
 class Robot {
@@ -14,11 +12,6 @@ class Robot {
     private final String direction;
     private final int maxX;
     private final int maxY;
-
-    public static Robot parse(String name, String position, int maxX, int maxY) {
-        String[] fields = position.split(" ");
-        return new Robot(name, valueOf(fields[0]), valueOf(fields[1]), fields[2], maxX, maxY);
-    }
 
     public String summary() {
         return name + " : " + x + " " + y + " " + direction;
