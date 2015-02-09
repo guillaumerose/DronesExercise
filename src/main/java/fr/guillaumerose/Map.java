@@ -35,7 +35,7 @@ public class Map {
 		Stopwatch stopwatch = Stopwatch.createStarted();
 		List<Future<String>> summaries = from(robots).transform(new Function<Robot, Future<String>>() {
 			@Override
-			public Future<String> apply(Robot robot) {
+			public Future<String> apply(final Robot robot) {
 				return executor.submit(new Callable<String>() {
 					@Override
 					public String call() throws Exception {
