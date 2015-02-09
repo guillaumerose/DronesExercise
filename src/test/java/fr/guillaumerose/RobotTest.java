@@ -14,6 +14,12 @@ import com.google.common.base.Splitter;
 
 public class RobotTest {
 	@Test
+	public void should_parse_robot_from_input() throws Exception {
+		Robot robot = Robot.fromLine(55, 25, "DRONE_A;7 10 N;AAGAAADAAGAAAGADAA");
+		assertThat(robot.summary()).isEqualTo("DRONE_A : 7 10 N");
+	}
+
+	@Test
 	public void should_answer_to_first_acceptance_test() {
 		assertThat(endPosition(new Robot("DRONE_A", 7, 10, N, 55, 25, instructions("AAGAAADAAGAAAGADAA"))).summary()) //
 				.isEqualTo("DRONE_A : 0 13 O");

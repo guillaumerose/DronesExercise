@@ -1,6 +1,12 @@
 package fr.guillaumerose;
 
+import static java.lang.Integer.valueOf;
+
+import java.util.ArrayDeque;
+import java.util.List;
 import java.util.Queue;
+
+import com.google.common.base.Splitter;
 
 class Robot {
 	private static final String RIGHT = "D";
@@ -67,5 +73,15 @@ class Robot {
 
 	private void turnRight() {
 		direction = direction.getRight();
+	}
+
+	public static Robot fromLine(int maxX, int maxY, String line) {
+		List<String> parts = Splitter.on(";").splitToList(line);
+		List<String> fields = Splitter.on(" ").splitToList(parts.get(1));
+		return new Robot(parts.get(0), valueOf(fields.get(0)), valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX, maxY, instructionsFrom(parts));
+	}
+
+	private static Queue<String> instructionsFrom(List<String> parts) {
+		return new ArrayDeque<>(Splitter.fixedLength(1).omitEmptyStrings().splitToList(parts.get(2)));
 	}
 }
