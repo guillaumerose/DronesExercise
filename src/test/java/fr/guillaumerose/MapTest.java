@@ -33,5 +33,6 @@ public class MapTest {
 		order.verify(robot1).hasNext();
 		order.verify(robot1).next();
 		order.verify(robot1).hasNext();
+		order.verify(robot1).summary();
 	}
 }
