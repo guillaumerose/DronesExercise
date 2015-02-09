@@ -21,7 +21,7 @@ class Robot {
 	private final int maxY;
 	private final Queue<String> instructions;
 
-	public Robot(String name, int x, int y, Direction direction, int maxX, int maxY, Queue<String> instructions) {
+	public Robot(String name, int x, int y, Direction direction, Queue<String> instructions, int maxX, int maxY) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -78,7 +78,7 @@ class Robot {
 	public static Robot fromLine(int maxX, int maxY, String line) {
 		List<String> parts = Splitter.on(";").splitToList(line);
 		List<String> fields = Splitter.on(" ").splitToList(parts.get(1));
-		return new Robot(parts.get(0), valueOf(fields.get(0)), valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX, maxY, instructionsFrom(parts));
+		return new Robot(parts.get(0), valueOf(fields.get(0)), valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), instructionsFrom(parts), maxX, maxY);
 	}
 
 	private static Queue<String> instructionsFrom(List<String> parts) {

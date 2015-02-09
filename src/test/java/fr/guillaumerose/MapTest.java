@@ -21,15 +21,17 @@ public class MapTest {
 		when(robot1.summary()).thenReturn("Robot1: some position");
 		when(robot2.summary()).thenReturn("Robot2: some position");
 
-		Map map = new Map(newArrayList(robot1, robot2));
+		Map map = new Map(0L, newArrayList(robot1, robot2));
 		map.run();
 
-		verify(robot1, times(3)).hasNext();
 		verify(robot2, times(2)).hasNext();
+		verify(robot2, times(1)).next();
 
-		InOrder order = inOrder(robot2);
-		order.verify(robot2).hasNext();
-		order.verify(robot2).next();
-		order.verify(robot2).hasNext();
+		InOrder order = inOrder(robot1);
+		order.verify(robot1).hasNext();
+		order.verify(robot1).next();
+		order.verify(robot1).hasNext();
+		order.verify(robot1).next();
+		order.verify(robot1).hasNext();
 	}
 }

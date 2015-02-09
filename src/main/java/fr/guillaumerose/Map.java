@@ -22,17 +22,50 @@ import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 
 public class Map {
+	private final ExecutorService executor = Executors.newFixedThreadPool(10);
 	private final List<Robot> robots;
-	private ExecutorService executor = Executors.newFixedThreadPool(10);
+	private final long waitTime;
 
-	public Map(List<Robot> robots) {
+	public Map(long waitTime, List<Robot> robots) {
+		this.waitTime = waitTime;
 		this.robots = robots;
+	}
+
+	public void run() {
+		Stopwatch stopwatch = Stopwatch.createStarted();
+		List<Future<String>> summaries = from(robots).transform(new Function<Robot, Future<String>>() {
+			@Override
+			public Future<String> apply(Robot robot) {
+				return executor.submit(new Callable<String>() {
+					@Override
+					public String call() throws Exception {
+						while (robot.hasNext()) {
+							robot.next();
+							Thread.sleep(waitTime);
+						}
+						return robot.summary();
+					}
+				});
+			}
+		}).toList();
+		from(summaries).forEach(new Consumer<Future<String>>() {
+			@Override
+			public void accept(Future<String> summary) {
+				try {
+					System.out.println(summary.get());
+				} catch (InterruptedException | ExecutionException e) {
+					throw propagate(e);
+				}
+			}
+		});
+		System.out.println("Total time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
+		executor.shutdown();
 	}
 
 	public static void main(String[] args) throws IOException {
 		List<String> lines = Files.readLines(new File(args[0]), Charsets.UTF_8);
 		List<String> sizes = Splitter.on(" ").splitToList(lines.get(0));
-		Map map = new Map(from(lines.subList(1, lines.size())).transform(toRobot(valueOf(sizes.get(0)), valueOf(sizes.get(1)))).toList());
+		Map map = new Map(10L, from(lines.subList(1, lines.size())).transform(toRobot(valueOf(sizes.get(0)), valueOf(sizes.get(1)))).toList());
 		map.run();
 	}
 
@@ -45,37 +78,4 @@ public class Map {
 		};
 	}
 
-	public void run() {
-		Stopwatch stopwatch = Stopwatch.createStarted();
-		from(robots).transform(new Function<Robot, Future<String>>() {
-			@Override
-			public Future<String> apply(Robot robot) {
-				return executor.submit(new Callable<String>() {
-					@Override
-					public String call() throws Exception {
-						while (robot.hasNext()) {
-							robot.next();
-						}
-						return robot.summary();
-					}
-				});
-			}
-		}).transform(new Function<Future<String>, String>() {
-			@Override
-			public String apply(Future<String> input) {
-				try {
-					return input.get();
-				} catch (InterruptedException | ExecutionException e) {
-					throw propagate(e);
-				}
-			}
-		}).forEach(new Consumer<String>() {
-			@Override
-			public void accept(String summary) {
-				System.out.println(summary);
-			}
-		});
-		System.out.println("Total time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
-		executor.shutdown();
-	}
 }
