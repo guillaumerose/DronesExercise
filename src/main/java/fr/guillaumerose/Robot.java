@@ -1,11 +1,7 @@
 package fr.guillaumerose;
 
-import java.util.Optional;
 import java.util.Queue;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 class Robot {
 	private static final String RIGHT = "D";
 	private static final String LEFT = "G";
@@ -19,6 +15,16 @@ class Robot {
 	private final int maxY;
 	private final Queue<String> instructions;
 
+	public Robot(String name, int x, int y, Direction direction, int maxX, int maxY, Queue<String> instructions) {
+		this.name = name;
+		this.x = x;
+		this.y = y;
+		this.direction = direction;
+		this.maxX = maxX;
+		this.maxY = maxY;
+		this.instructions = instructions;
+	}
+
 	public String summary() {
 		return name + " : " + x + " " + y + " " + direction;
 	}
@@ -28,16 +34,14 @@ class Robot {
 	}
 
 	public void next() {
-		Optional.ofNullable(instructions.poll()).ifPresent(instruction -> {
-			if (FORWARD.equals(instruction)) {
-				forward();
-			} else if (LEFT.equals(instruction)) {
-				turnLeft();
-			} else if (RIGHT.equals(instruction)) {
-				turnRight();
-			}
-		});
-	
+		String instruction = instructions.poll();
+		if (FORWARD.equals(instruction)) {
+			forward();
+		} else if (LEFT.equals(instruction)) {
+			turnLeft();
+		} else if (RIGHT.equals(instruction)) {
+			turnRight();
+		}
 	}
 
 	private void forward() {

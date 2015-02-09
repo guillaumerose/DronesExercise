@@ -15,9 +15,6 @@ import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 
 public class Map {
-	private static final String RIGHT = "D";
-	private static final String LEFT = "G";
-	private static final String FORWARD = "A";
 	private final int maxX;
 	private final int maxY;
 
@@ -37,14 +34,11 @@ public class Map {
 
 	private Robot robotFrom(List<String> parts) {
 		List<String> fields = Splitter.on(" ").splitToList(parts.get(1));
-		return new Robot(parts.get(0), valueOf(fields.get(0)),
-				valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX,
-				maxY, instructionsFrom(parts));
+		return new Robot(parts.get(0), valueOf(fields.get(0)), valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX, maxY, instructionsFrom(parts));
 	}
 
 	private static Queue<String> instructionsFrom(List<String> parts) {
-		return new ArrayDeque<>(Splitter.fixedLength(1).omitEmptyStrings()
-				.splitToList(parts.get(2)));
+		return new ArrayDeque<>(Splitter.fixedLength(1).omitEmptyStrings().splitToList(parts.get(2)));
 	}
 
 	public static void main(String[] args) throws IOException {
@@ -55,7 +49,6 @@ public class Map {
 		for (String line : lines.subList(1, lines.size())) {
 			System.out.println(map.move(line));
 		}
-		System.out.println("Total time: "
-				+ stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
+		System.out.println("Total time: " + stopwatch.elapsed(TimeUnit.MILLISECONDS) + " ms");
 	}
 }
