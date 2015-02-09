@@ -1,42 +1,42 @@
 package fr.guillaumerose;
 
 import lombok.AllArgsConstructor;
-import lombok.experimental.Wither;
 
-@Wither
 @AllArgsConstructor
 class Robot {
-    private final String name;
-    private final int x;
-    private final int y;
-    private final Direction direction;
-    private final int maxX;
-    private final int maxY;
+	private final String name;
+	private int x;
+	private int y;
+	private Direction direction;
+	private final int maxX;
+	private final int maxY;
 
-    public String summary() {
-        return name + " : " + x + " " + y + " " + direction;
-    }
+	public String summary() {
+		return name + " : " + x + " " + y + " " + direction;
+	}
 
-    public Robot forward() {
-        switch (direction) {
-            case S:
-                return y - 1 >= 0 ? withY(y - 1) : this;
-            case N:
-                return y + 1 <= maxY ? withY(y + 1) : this;
-            case O:
-                return x - 1 >= 0 ? withX(x - 1) : this;
-            case E:
-                return x + 1 <= maxX ? withX(x + 1) : this;
-            default:
-                return this;
-        }
-    }
+	public void forward() {
+		switch (direction) {
+		case S:
+			y = y - 1 >= 0 ? y - 1 : y;
+			break;
+		case N:
+			y = y + 1 <= maxY ? y + 1 : y;
+			break;
+		case O:
+			x = x - 1 >= 0 ? x - 1 : x;
+			break;
+		case E:
+			x = x + 1 <= maxX ? x + 1 : x;
+			break;
+		}
+	}
 
-    public Robot turnLeft() {
-        return withDirection(direction.getLeft());
-    }
+	public void turnLeft() {
+		direction = direction.getLeft();
+	}
 
-    public Robot turnRight() {
-        return withDirection(direction.getRight());
-    }
+	public void turnRight() {
+		direction = direction.getRight();
+	}
 }
