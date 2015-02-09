@@ -1,11 +1,12 @@
 package fr.guillaumerose;
 
-import static com.google.common.collect.Lists.newArrayList;
 import static java.lang.Integer.valueOf;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayDeque;
 import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 import com.google.common.base.Charsets;
@@ -26,36 +27,30 @@ public class Map {
 	}
 
 	public String move(String input) {
-		List<String> parts = newArrayList(Splitter.on(";").split(input));
+		List<String> parts = Splitter.on(";").splitToList(input);
 		Robot robot = robotFrom(parts);
-		for (String instruction : instructionsFrom(parts)) {
-			if (FORWARD.equals(instruction)) {
-				robot.forward();
-			} else if (LEFT.equals(instruction)) {
-				robot.turnLeft();
-			} else if (RIGHT.equals(instruction)) {
-				robot.turnRight();
-			}
+		while (robot.hasNext()) {
+			robot.next();
 		}
 		return robot.summary();
 	}
 
 	private Robot robotFrom(List<String> parts) {
-		List<String> fields = newArrayList(Splitter.on(" ").split(parts.get(1)));
+		List<String> fields = Splitter.on(" ").splitToList(parts.get(1));
 		return new Robot(parts.get(0), valueOf(fields.get(0)),
 				valueOf(fields.get(1)), Direction.valueOf(fields.get(2)), maxX,
-				maxY);
+				maxY, instructionsFrom(parts));
 	}
 
-	private static List<String> instructionsFrom(List<String> parts) {
-		return newArrayList(Splitter.fixedLength(1).omitEmptyStrings()
-				.split(parts.get(2)));
+	private static Queue<String> instructionsFrom(List<String> parts) {
+		return new ArrayDeque<>(Splitter.fixedLength(1).omitEmptyStrings()
+				.splitToList(parts.get(2)));
 	}
 
 	public static void main(String[] args) throws IOException {
 		Stopwatch stopwatch = Stopwatch.createStarted();
 		List<String> lines = Files.readLines(new File(args[0]), Charsets.UTF_8);
-		List<String> sizes = newArrayList(Splitter.on(" ").split(lines.get(0)));
+		List<String> sizes = Splitter.on(" ").splitToList(lines.get(0));
 		Map map = new Map(valueOf(sizes.get(0)), valueOf(sizes.get(1)));
 		for (String line : lines.subList(1, lines.size())) {
 			System.out.println(map.move(line));
