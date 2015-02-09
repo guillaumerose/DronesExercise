@@ -23,7 +23,24 @@ class Robot {
 		return name + " : " + x + " " + y + " " + direction;
 	}
 
-	public void forward() {
+	public boolean hasNext() {
+		return !instructions.isEmpty();
+	}
+
+	public void next() {
+		Optional.ofNullable(instructions.poll()).ifPresent(instruction -> {
+			if (FORWARD.equals(instruction)) {
+				forward();
+			} else if (LEFT.equals(instruction)) {
+				turnLeft();
+			} else if (RIGHT.equals(instruction)) {
+				turnRight();
+			}
+		});
+	
+	}
+
+	private void forward() {
 		switch (direction) {
 		case S:
 			y = y - 1 >= 0 ? y - 1 : y;
@@ -40,28 +57,11 @@ class Robot {
 		}
 	}
 
-	public void turnLeft() {
+	private void turnLeft() {
 		direction = direction.getLeft();
 	}
 
-	public void turnRight() {
+	private void turnRight() {
 		direction = direction.getRight();
-	}
-
-	public void next() {
-		Optional.ofNullable(instructions.poll()).ifPresent(instruction -> {
-			if (FORWARD.equals(instruction)) {
-				forward();
-			} else if (LEFT.equals(instruction)) {
-				turnLeft();
-			} else if (RIGHT.equals(instruction)) {
-				turnRight();
-			}
-		});
-
-	}
-
-	public boolean hasNext() {
-		return !instructions.isEmpty();
 	}
 }
